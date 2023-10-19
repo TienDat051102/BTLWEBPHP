@@ -3,12 +3,16 @@ ob_start();
 session_start();
 $path = "../../models/ketnoi.php";
 if (file_exists($path)) {
-  require $path;
-  $username = $_SESSION["username"];
-  $sql2 = "SELECT nhanvien.TenNhanVien from user inner join nhanvien ON nhanvien.UserName = user.UserName WHERE user.UserName = '$username';";
-  $query2 = mysqli_query($conn, $sql2);
-  $rows2 = $query2->fetch_array();
-  $tennhanvien = $rows2[0];
+  include $path;
+  if (isset($_SESSION["username"])) {
+    $username = $_SESSION["username"];
+    $sql = "SELECT * From user WHERE UserName = '$username'";
+    $query = mysqli_query($conn, $sql);
+    $rows = mysqli_num_rows($query);
+    $rows = $query->fetch_array();
+    $tennhanvien = $rows['Ten'];
+  } else {
+  }
 } else {
   die("{$path} không tồn tại");
 }
